@@ -3,7 +3,6 @@ package com.serverless
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
-import com.amazonaws.services.dynamodbv2.document.KeyAttribute
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import org.apache.log4j.BasicConfigurator
@@ -13,10 +12,13 @@ import java.util.*
 class Handler : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
 
     override fun handleRequest(input: Map<String, Any>, context: Context): ApiGatewayResponse {
+        LOG.info("iruning lambda")
+        LOG.info(input)
 
         val dynamoDb = DynamoDB(AmazonDynamoDBClientBuilder.standard().withRegion(Regions.EU_WEST_1).build())
         val table = dynamoDb.getTable("Person")
-        val item = table.getItem("id", "1")
+        LOG.info("before getting the item")
+        val item = table.getItem("id", 1)
         println(item.toJSONPretty())
         LOG.info("item is {}" + item.toJSONPretty())
 
